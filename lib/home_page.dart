@@ -1,38 +1,55 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'details_page.dart';
+
+// Create List
+Future<List<Item>> fetchData() async {
+  var url = Uri.parse('http://mashikur.dev.alpha.net.bd/api-data/?home');
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    if (json.decode(response.body)['status'] == true) {
+      List jsonResponse = json.decode(response.body)['data'];
+      return jsonResponse.map((data) => Item.fromJson(data)).toList();
+    } else {
+      throw Exception('No Data Found!');
+    }
+  } else {
+    throw Exception('Something Wnt Wrong!');
+  }
+}
+
+// Item Model
+class Item {
+  final int id;
+  final String image;
+  final String title;
+  final String background;
+  final int icon;
+
+  Item(
+      {required this.id,
+      required this.image,
+      required this.title,
+      required this.background,
+      required this.icon});
+
+  factory Item.fromJson(Map<String, dynamic> json) {
+    return Item(
+      id: json['id'],
+      image: json['image'],
+      title: json['title'],
+      background: json['background'],
+      icon: json['icon'],
+    );
+  }
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    //Data that will receive from api
-    final dataReceived = [
-      {
-        "id": 1,
-        "icon": Icons.airplanemode_active,
-        "color": Colors.blue,
-        "title": "Airplane",
-      },
-      {
-        "id": 2,
-        "icon": Icons.train,
-        "color": Colors.purple,
-        "title": "Train",
-      },
-      {
-        "id": 3,
-        "icon": Icons.directions_bus,
-        "color": Colors.orange,
-        "title": "Bus",
-      },
-      {
-        "id": 4,
-        "icon": Icons.directions_car,
-        "color": Colors.green,
-        "title": "Car",
-      }
-    ];
-
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -78,57 +95,84 @@ class HomePage extends StatelessWidget {
           ),
 
           // Body Row
-          Expanded(
-            child: Container(
-                padding: const EdgeInsets.all(25),
-                color: Colors.grey[100],
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  children: List.generate(dataReceived.length, (index) {
-                    return Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                  id: dataReceived[index]['id'] as int),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: dataReceived[index]['color'] as Color,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          margin: const EdgeInsets.all(20),
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                  padding: const EdgeInsets.only(bottom: 5),
-                                  child: Icon(
-                                    dataReceived[index]['icon'] as IconData,
-                                    size: 70,
-                                    color: Colors.white,
-                                  )),
-                              Text(
-                                dataReceived[index]['title'] as String,
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                )),
+          const Expanded(
+            child: GetItemFromApi(),
           ),
         ],
       ),
+    );
+  }
+}
+
+class GetItemFromApi extends StatefulWidget {
+  const GetItemFromApi({super.key});
+
+  @override
+  State<GetItemFromApi> createState() => _GetItemFromApiState();
+}
+
+class _GetItemFromApiState extends State<GetItemFromApi> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Item>>(
+      future: fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return GridView.count(
+            crossAxisCount: 2,
+            children: List.generate(snapshot.data!.length, (index) {
+              return Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetailsPage(id: snapshot.data![index].id),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(int.parse(snapshot.data![index].background)),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    margin: const EdgeInsets.all(20),
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Icon(
+                              IconData(snapshot.data![index].icon,
+                                  fontFamily: 'MaterialIcons'),
+                              size: 70,
+                              color: Colors.white,
+                            )),
+                        Text(
+                          snapshot.data![index].title,
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.white),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+          );
+        } else if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        // Loader
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [CircularProgressIndicator()],
+        );
+      },
     );
   }
 }
