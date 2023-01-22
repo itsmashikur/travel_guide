@@ -11,6 +11,7 @@ class InternetCheck extends StatefulWidget {
   State<InternetCheck> createState() => _InternetCheckState();
 }
 
+// Check And Set State
 class _InternetCheckState extends State<InternetCheck> {
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
@@ -38,6 +39,7 @@ class _InternetCheckState extends State<InternetCheck> {
       developer.log('Couldn\'t check connectivity status', error: e);
       return;
     }
+
     if (!mounted) {
       return Future.value(null);
     }
@@ -52,6 +54,8 @@ class _InternetCheckState extends State<InternetCheck> {
   }
 
   @override
+
+  // Show HomePage or Die NoInternet
   Widget build(BuildContext context) {
     return _connectionStatus == ConnectivityResult.none
         ? const NoInternet()
@@ -59,6 +63,7 @@ class _InternetCheckState extends State<InternetCheck> {
   }
 }
 
+// No Internet Screen
 class NoInternet extends StatelessWidget {
   const NoInternet({super.key});
   @override
@@ -91,7 +96,7 @@ class NoInternet extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  'Internet is requried to run this app!',
+                  'Internet is required to run this app!',
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     color: Colors.black,
