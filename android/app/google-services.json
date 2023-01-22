@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "454461850240",
+    "project_id": "alpha-32d98",
+    "storage_bucket": "alpha-32d98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454461850240:android:7183a2ee34ab86d4c59c65",
+        "android_client_info": {
+          "package_name": "com.example.mashikur"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454461850240-qniceoq0dib2upfdp04jnmq90d010kir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBPVcNIVO03c7pZS6sBVdpwazskEUxULE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454461850240-qniceoq0dib2upfdp04jnmq90d010kir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
