@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
         children: <Widget>[
           // Header Row
           Container(
-            height: 200,
+            height: 250,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(

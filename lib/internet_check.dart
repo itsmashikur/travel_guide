@@ -64,23 +64,43 @@ class NoInternet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Image(
-          image: NetworkImage(
-              "http://mashikur.dev.alpha.net.bd/api-data/?image=header.png"),
-          fit: BoxFit.cover,
-        ),
-        Text(
-          'No Internet',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-          ),
-        ),
-      ],
-    ));
+        backgroundColor: Colors.blue[50],
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Image(
+                  image: AssetImage('assets/images/no_internet.png'),
+                  width: 72,
+                  height: 72,
+                ),
+                Divider(
+                  height: 30,
+                ),
+                Text(
+                  'No Internet!',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Divider(
+                  height: 5,
+                ),
+                Text(
+                  'Internet is requried to run this app!',
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ));
   }
 }
