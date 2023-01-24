@@ -39,46 +39,47 @@ class DetailsPageState extends State<DetailsPage> {
               title: Text(data['title']),
               backgroundColor: Color(int.parse(data['background'])),
             ),
-            body: Container(
-              color: Colors.grey[100],
-              width: double.infinity,
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image(
-                          image: NetworkImage(data['image']),
-                          fit: BoxFit.cover,
-                        ),
-                      )),
-                  Text(
-                    data['title'],
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+            body: SingleChildScrollView(
+              child: Container(
+                color: Colors.grey[100],
+                width: double.infinity,
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image(
+                            image: NetworkImage(data['image']),
+                            fit: BoxFit.cover,
+                          ),
+                        )),
+                    Text(
+                      data['title'],
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Container(
-                      margin: const EdgeInsets.only(bottom: 5, top: 5),
-                      child: Divider(
-                        color: Colors.grey[300],
-                        thickness: 1,
-                      )),
-                  Text(
-                    data['details'],
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
+                    Container(
+                        margin: const EdgeInsets.only(bottom: 5, top: 5),
+                        child: Divider(
+                          color: Colors.grey[300],
+                          thickness: 1,
+                        )),
+                    Text(
+                      data['details'],
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
+            ));
   }
 }
